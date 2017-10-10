@@ -16,7 +16,7 @@ import (
 )
 
 func integratedEc2Maintenance() (value string, err error) {
-	value = "maintenance is not exist"
+	value = "There is no maintenance"
 	if awsIntegrated.Arn != "" {
 		sess := session.Must(session.NewSession())
 		creds := stscreds.NewCredentials(sess, awsIntegrated.Arn)
