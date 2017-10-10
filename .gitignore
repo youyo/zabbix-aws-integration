@@ -1,2 +1,4 @@
 .envrc
 vendor/
+artifacts/
+aws-integration

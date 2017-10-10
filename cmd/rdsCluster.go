@@ -18,12 +18,12 @@ type (
 var integratedRdsCluster IntegratedRdsCluster
 
 var rdsClusterCmd = &cobra.Command{
-	Use: "cluster",
+	Use: "rds-cluster",
 	//Short: "A brief description of your command",
 	//Long: `A brief description of your command`,
 }
 
 func init() {
-	rdsCmd.AddCommand(rdsClusterCmd)
-	//rdsCmd.Flags().StringVarP(&integratedRds., "", "", "", "")
+	RootCmd.AddCommand(rdsClusterCmd)
+	//RootCmd.Flags().StringVarP(&integratedRds., "", "", "", "")
 }
