@@ -8,6 +8,8 @@ import (
 	"github.com/spf13/viper"
 )
 
+const noMaintenanceMessage string = "There is no maintenance"
+
 type (
 	AwsIntegrated struct {
 		AccessKey       string
