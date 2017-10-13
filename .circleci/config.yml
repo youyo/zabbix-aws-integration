@@ -1,0 +1,30 @@
+version: 2
+jobs:
+  build:
+    working_directory: /go/src/github.com/youyo/zabbix-userparameter-script-aws-integration
+    docker:
+      - image: golang:1.9.1
+    steps:
+      - checkout
+      - run:
+          name: Dependency
+          command: |
+            go get github.com/golang/dep
+            dep ensure -v
+      - run:
+          name: Test
+          command: |
+            go test -v
+      - run:
+          name: Deploy
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              go get github.com/tcnksm/ghr
+              go build -o aws-integration -x
+              OWNER=youyo
+              REPOSITORY=zabbix-userparameter-script-aws-integration
+              VERSION=`git describe --tags --abbrev=0`
+              ghr -t ${GITHUB_TOKEN} -u ${OWNER} -r ${REPOSITORY} --replace ${VERSION} aws-integration
+            else
+              echo "Not master branch."
+            fi

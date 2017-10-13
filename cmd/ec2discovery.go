@@ -47,6 +47,7 @@ func integratedEc2Discovery() (d aws_integration.DiscoveryData, err error) {
 	if err != nil {
 		return
 	}
+	pp.Print(resp)
 	for _, v := range resp.Reservations {
 		for _, i := range v.Instances {
 			integratedEc2.InstanceID = *i.InstanceId
@@ -58,9 +59,20 @@ func integratedEc2Discovery() (d aws_integration.DiscoveryData, err error) {
 				}
 				return ""
 			}()
+			instanceRole := func() string {
+				for _, t := range i.Tags {
+					if *t.Key == "Role" {
+						return *t.Value
+					}
+				}
+				return ""
+			}()
 			d = append(d, aws_integration.DiscoveryItem{
-				"INSTANCE_ID":   integratedEc2.InstanceID,
-				"INSTANCE_NAME": instanceName,
+				"INSTANCE_ID":         integratedEc2.InstanceID,
+				"INSTANCE_NAME":       instanceName,
+				"INSTANCE_ROLE":       instanceRole,
+				"INSTANCE_PUBLIC_IP":  *i.PublicIpAddress,
+				"INSTANCE_PRIVATE_IP": *i.PrivateIpAddress,
 			})
 		}
 	}
