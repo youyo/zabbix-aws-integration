@@ -6,7 +6,7 @@ jobs:
       - image: golang:1.9
     steps:
       - checkout
-        - run: mkdir -p /tmp/test-results/
+      - run: mkdir -p /tmp/test-results/
       - run:
           name: Dependency
           command: |
