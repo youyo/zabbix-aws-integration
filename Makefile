@@ -1,37 +1,64 @@
-Name := aws-integration
-Repository := zabbix-userparameter-script-$(Name)
-Version := $(shell git describe --tags --abbrev=0)
-OWNER := youyo
 .DEFAULT_GOAL := help
+Owner := youyo
+Name := zabbix-aws-integration
+Repository := "github.com/$(Owner)/$(Name)"
+GithubToken := ${GITHUB_TOKEN}
+Version := $(shell git describe --tags --abbrev=0)
+CommitHash := $(shell git rev-parse --verify HEAD)
+BuildTime := $(shell date '+%Y/%m/%d %H:%M:%S %Z')
+GoVersion := $(shell go version)
 
 ## Setup
 setup:
-	go get github.com/golang/dep
-	go get github.com/Songmu/make2help/cmd/make2help
+	go get -u -v github.com/golang/dep/cmd/dep
+	go get -u -v github.com/mitchellh/gox
+	go get -u -v github.com/tcnksm/ghr
+	go get -u -v github.com/jstemmer/go-junit-report
 
 ## Install dependencies
-deps: setup
-	dep ensure
+deps:
+	dep ensure -v
+
+## Execute `go run`
+run:
+	go run \
+		-ldflags "\
+			-X \"$(Repository)/cmd/$(Name)/cmd.Name=$(Name)\" \
+			-X \"$(Repository)/cmd/$(Name)/cmd.Version=$(Version)\" \
+			-X \"$(Repository)/cmd/$(Name)/cmd.CommitHash=$(CommitHash)\" \
+			-X \"$(Repository)/cmd/$(Name)/cmd.BuildTime=$(BuildTime)\" \
+			-X \"$(Repository)/cmd/$(Name)/cmd.GoVersion=$(GoVersion)\"\
+		" \
+		main.go ${OPTION}
 
 ## Build
 build:
-	docker container run \
-		--rm \
-		--name=$(Name)-build \
-		-v "`pwd`:/go/src/github.com/$(OWNER)/$(Repository)" \
-		-w '/go/src/github.com/$(OWNER)/$(Repository)' \
-		golang:1.9 \
-		./build.sh $(Name)
+	gox -osarch="darwin/amd64 linux/amd64" \
+		-ldflags="\
+			-X \"$(Repository)/cmd/$(Name)/cmd.Name=$(Name)\" \
+			-X \"$(Repository)/cmd/$(Name)/cmd.Version=$(Version)\" \
+			-X \"$(Repository)/cmd/$(Name)/cmd.CommitHash=$(CommitHash)\" \
+			-X \"$(Repository)/cmd/$(Name)/cmd.BuildTime=$(BuildTime)\" \
+			-X \"$(Repository)/cmd/$(Name)/cmd.GoVersion=$(GoVersion)\"\
+		" \
+		-output="pkg/$(Name)_{{.OS}}_{{.Arch}}"
 
-build-local:
-	go build -o $(Name) -x
+## Packaging
+package:
+	for arch in darwin_amd64 linux_amd64; do \
+		zip -j pkg/$(Name)_$$arch.zip pkg/$(Name)_$$arch; \
+		done
 
 ## Release
 release:
-	ghr -t ${GITHUB_TOKEN} -u $(OWNER) -r $(Repository) --replace $(Version) artifacts/
+	ghr -t ${GithubToken} -u $(Owner) -r $(Name) --replace $(Version) pkg/
+
+## Remove packages
+clean:
+	rm -rf pkg/
 
 ## Show help
 help:
 	@make2help $(MAKEFILE_LIST)
 
-.PHONY: setup deps build build-local release help
+.PHONY: setup deps run build release clean help

@@ -1,4 +1,3 @@
 .envrc
 vendor/
-artifacts/
-aws-integration
+pkg/
