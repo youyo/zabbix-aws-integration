@@ -20,8 +20,15 @@ type (
 	}
 )
 
-var cfgFile string
-var awsIntegrated AwsIntegrated
+var (
+	Name          string
+	Version       string
+	CommitHash    string
+	BuildTime     string
+	GoVersion     string
+	cfgFile       string
+	awsIntegrated AwsIntegrated
+)
 
 var RootCmd = &cobra.Command{
 	Use: "aws-integration",
