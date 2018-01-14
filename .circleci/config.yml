@@ -12,10 +12,10 @@ jobs:
           command: |
             make setup
             make deps
-      - run:
-          name: Test
-          command: |
-            make test | go-junit-report > /tmp/test-results/go-test-report.xml
+      #- run:
+      #    name: Test
+      #    command: |
+      #      make test | go-junit-report > /tmp/test-results/go-test-report.xml
       - store_test_results:
           path: /tmp/test-results/
       - run:
