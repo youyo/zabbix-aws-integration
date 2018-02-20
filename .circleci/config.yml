@@ -22,6 +22,8 @@ jobs:
           name: Release
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              apt-get update
+              apt-get install -y zip
               make build
               make package
               make -s release
