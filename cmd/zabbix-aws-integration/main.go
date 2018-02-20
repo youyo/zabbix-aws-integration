@@ -1,4 +1,4 @@
-// Copyright © 2017 youyo
+// Copyright © 2018 youyo <1003ni2@gmail.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,7 @@
 
 package main
 
-import "github.com/youyo/zabbix-userparameter-script-aws-integration/cmd"
+import "github.com/youyo/zabbix-aws-integration/cmd/zabbix-aws-integration/cmd"
 
 func main() {
 	cmd.Execute()

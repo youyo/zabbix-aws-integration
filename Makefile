@@ -29,7 +29,7 @@ run:
 			-X \"$(Repository)/cmd/$(Name)/cmd.BuildTime=$(BuildTime)\" \
 			-X \"$(Repository)/cmd/$(Name)/cmd.GoVersion=$(GoVersion)\"\
 		" \
-		main.go ${OPTION}
+		./cmd/$(Name)/main.go ${OPTION}
 
 ## Build
 build:
@@ -41,7 +41,8 @@ build:
 			-X \"$(Repository)/cmd/$(Name)/cmd.BuildTime=$(BuildTime)\" \
 			-X \"$(Repository)/cmd/$(Name)/cmd.GoVersion=$(GoVersion)\"\
 		" \
-		-output="pkg/$(Name)_{{.OS}}_{{.Arch}}"
+		-output="pkg/$(Name)_{{.OS}}_{{.Arch}}" \
+		./cmd/$(Name)/
 
 ## Packaging
 package:
