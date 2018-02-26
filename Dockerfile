@@ -39,4 +39,3 @@ ADD zabbix-aws-integration.conf /etc/zabbix/zabbix_agentd.d/
 EXPOSE 10050/TCP
 WORKDIR /var/lib/zabbix
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["agentd", "none"]
