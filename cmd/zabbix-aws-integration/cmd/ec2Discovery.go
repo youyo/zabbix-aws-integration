@@ -17,12 +17,6 @@ type (
 		InstanceRole      string `json:"{#INSTANCE_ROLE}"`
 		InstancePublicIp  string `json:"{#INSTANCE_PUBLIC_IP}"`
 		InstancePrivateIp string `json:"{#INSTANCE_PRIVATE_IP}"`
-		IfConn            string `json:"{#IF.CONN}"`
-		IfIp              string `json:"{#IF.IP}"`
-		IfDns             string `json:"{#IF.DNS}"`
-		IfPort            string `json:"{#IF.PORT}"`
-		IfType            string `json:"{#IF.TYPE}"`
-		IfDefault         int    `json:"{#IF.DEFAULT}"`
 	}
 	Ec2DiscoveryItems []Ec2DiscoveryItem
 	Ec2DiscoveryData  struct {
@@ -78,12 +72,6 @@ func buildEc2DiscoveryData(resp *ec2.DescribeInstancesOutput) (ec2DiscoveryData 
 				InstanceRole:      instanceRole,
 				InstancePublicIp:  *i.PublicIpAddress,
 				InstancePrivateIp: *i.PrivateIpAddress,
-				IfConn:            *i.PublicIpAddress,
-				IfIp:              *i.PublicIpAddress,
-				IfDns:             instanceName,
-				IfPort:            "10050",
-				IfType:            "AGENT",
-				IfDefault:         1,
 			})
 		}
 	}
