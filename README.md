@@ -12,5 +12,5 @@ $ docker container run \
 	-e ZBX_TIMEOUT=30 \
 	-p 10050:10050 \
 	youyo/zabbix-aws-integration:latest
-$ zabbix_get -s container_host -k zabbix-aws-integration.discovery[ec2,ap-northeast-1,arn:aws:iam::00000000:role/iam_role_name]
+$ zabbix_get -s container_host -k zabbix-aws-integration.discovery[ec2,zabbix-host-group,ap-northeast-1,arn:aws:iam::00000000:role/iam_role_name]
 ```

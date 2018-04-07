@@ -17,6 +17,7 @@ type (
 		InstanceRole      string `json:"{#INSTANCE_ROLE}"`
 		InstancePublicIp  string `json:"{#INSTANCE_PUBLIC_IP}"`
 		InstancePrivateIp string `json:"{#INSTANCE_PRIVATE_IP}"`
+		ZabbixHostGroup   string `json:"{#ZABBIX_HOST_GROUP}"`
 	}
 	Ec2DiscoveryItems []Ec2DiscoveryItem
 	Ec2DiscoveryData  struct {
@@ -72,6 +73,7 @@ func buildEc2DiscoveryData(resp *ec2.DescribeInstancesOutput) (ec2DiscoveryData 
 				InstanceRole:      instanceRole,
 				InstancePublicIp:  *i.PublicIpAddress,
 				InstancePrivateIp: *i.PrivateIpAddress,
+				ZabbixHostGroup:   zabbixAwsIntegration.Ec2.Discovery.ZabbixHostGroup,
 			})
 		}
 	}
@@ -122,4 +124,5 @@ var ec2DiscoveryCmd = &cobra.Command{
 
 func init() {
 	ec2Cmd.AddCommand(ec2DiscoveryCmd)
+	ec2DiscoveryCmd.PersistentFlags().StringVarP(&zabbixAwsIntegration.Ec2.Discovery.ZabbixHostGroup, "zabbix-host-group", "", "aws_integrations", "Zabbix HostGroup")
 }

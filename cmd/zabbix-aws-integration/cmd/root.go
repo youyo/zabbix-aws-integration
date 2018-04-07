@@ -15,6 +15,11 @@ type (
 		Arn             string
 		Region          string
 		Debug           bool
+		Ec2             struct {
+			Discovery struct {
+				ZabbixHostGroup string
+			}
+		}
 	}
 )
 
